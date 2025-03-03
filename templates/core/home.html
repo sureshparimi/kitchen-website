@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Welcome to Parimi's Home Kitchen{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center py-5 mb-5">
+    <div class="container">
+        <h1 class="display-4 mb-4">Welcome to Parimi's Home Kitchen</h1>
+        <p class="lead mb-4">Experience the authentic flavors of South Indian cuisine, crafted with love and tradition.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'menu' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-utensils me-2"></i>View Menu
+            </a>
+            {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-user-plus me-2"></i>Register Now
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+:root {
+    --primary-color: #FF6B6B;
+    --secondary-color: #4ECDC4;
+    --text-color: #2C3E50;
+    --background-color: #F7F9FC;
+    --card-background: #FFFFFF;
+    --accent-color: #FFE66D;
+    --indian-saffron: #FF9933;
+    --indian-green: #138808;
+    --indian-blue: #000080;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 0;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.hero-section .lead {
+    font-size: 1.25rem;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-color);
+}
+
+.btn-primary:hover {
+    background-color: #FFD93D;
+    border-color: #FFD93D;
+    color: var(--text-color);
+}
+
+.btn-outline-primary {
+    border-color: white;
+    color: white;
+}
+
+.btn-outline-primary:hover {
+    background-color: white;
+    border-color: white;
+    color: var(--primary-color);
+}
+
+.featured-items {
+    background-color: white;
+    padding: 4rem 0;
+}
+
+.testimonials-section {
+    background-color: var(--background-color);
+    padding: 4rem 0;
+}
+
+.why-choose-us {
+    background-color: white;
+    padding: 4rem 0;
+}
+
+.feature-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon-saffron {
+    color: var(--indian-saffron);
+}
+
+.feature-icon-white {
+    color: #333333;
+    background: white;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.feature-icon-green {
+    color: var(--indian-green);
+}
+
+.testimonials-slider {
+    display: flex;
+    overflow: hidden;
+}
+
+.testimonial-card {
+    min-width: calc(25% - 20px); /* Show 4 testimonials at a time, adjust for margin */
+    margin-right: 20px;
+}
+
+.testimonial-nav {
+    color: #007bff; /* Change color to a visible blue */
+    background: transparent;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+}
+</style>
+
+<!-- Featured Items Section -->
+<section class="featured-items py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Dishes</h2>
+        <div class="row g-4">
+            {% for item in featured_items %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 menu-item-card fade-in">
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <span class="price">€{{ item.price }}</span>
+                        </div>
+                        <p class="card-text">{{ item.description }}</p>
+                        {% if item.is_available %}
+                        <button class="btn btn-primary add-to-cart" data-item-id="{{ item.id }}">
+                            <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                        </button>
+                        {% else %}
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-clock me-2"></i>Currently Unavailable
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Customers Say at Lalitha's Kitchen</h2>
+        <div class="average-rating text-center mb-4">
+            <h3>Average Rating: <span id="averageRating">4.8</span></h3>
+        </div>
+        <div class="testimonials-container position-relative">
+            <button class="btn btn-outline-primary position-absolute top-50 start-0 translate-middle-y testimonial-nav prev-testimonial">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="btn btn-outline-primary position-absolute top-50 end-0 translate-middle-y testimonial-nav next-testimonial">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="testimonials-slider d-flex">
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Jan Jansen</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="card-text">Heerlijke gerechten! Zeker een aanrader.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Piet de Vries</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="card-text">Fantastische service en heerlijk eten!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Karin de Boer</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="card-text">Zeer smakelijke maaltijden.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Hans Meijer</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="card-text">Altijd een plezier om hier te eten.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Sophie van Dijk</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="card-text">Uitstekende kwaliteit en service!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Tom van Leeuwen</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="card-text">Heerlijke curry's en naan.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Anneke de Groot</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="card-text">Zeer tevreden met de gerechten.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Mark van der Meer</h5>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="card-text">Een geweldige ervaring!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-choose-us py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose Parimi's Kitchen?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 feature-card">
+                    <div class="card-body">
+                        <i class="fas fa-leaf fa-3x mb-4 feature-icon-saffron"></i>
+                        <h3 class="h4 mb-3">Fresh Ingredients</h3>
+                        <p>We use only the freshest, highest-quality ingredients to ensure authentic taste and flavors.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 feature-card">
+                    <div class="card-body">
+                        <i class="fas fa-heart fa-3x mb-4 feature-icon-white"></i>
+                        <h3 class="h4 mb-3">Made with Love</h3>
+                        <p>Each dish is prepared with care and attention to detail, just like home-cooked meals.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 feature-card">
+                    <div class="card-body">
+                        <i class="fas fa-clock fa-3x mb-4 feature-icon-green"></i>
+                        <h3 class="h4 mb-3">Quick Service</h3>
+                        <p>Fast and efficient service without compromising on quality or taste.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add to Cart Success Modal -->
+<div class="modal fade" id="addToCartModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Item Added to Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>The item has been added to your cart successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+                <a href="{% url 'cart' %}" class="btn btn-primary">View Cart</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add to Cart Functionality
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    const modal = new bootstrap.Modal(document.getElementById('addToCartModal'));
+    
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const itemId = this.dataset.itemId;
+            
+            fetch('/cart/add/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    quantity: 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    modal.show();
+                    if (data.cart_count !== undefined) {
+                        document.querySelector('.cart-count').textContent = data.cart_count;
+                    }
+                }
+            });
+        });
+    });
+
+    const testimonials = [
+        { name: 'Jan Jansen', rating: 4.8, review: 'Heerlijke gerechten! Zeker een aanrader.' },
+        { name: 'Piet de Vries', rating: 5.0, review: 'Fantastische service en heerlijk eten!' },
+        { name: 'Karin de Boer', rating: 4.5, review: 'Zeer smakelijke maaltijden.' },
+        { name: 'Hans Meijer', rating: 4.9, review: 'Altijd een plezier om hier te eten.' },
+        { name: 'Sophie van Dijk', rating: 5.0, review: 'Uitstekende kwaliteit en service!' },
+        { name: 'Tom van Leeuwen', rating: 4.7, review: 'Heerlijke curry's en naan.' },
+        { name: 'Anneke de Groot', rating: 4.6, review: 'Zeer tevreden met de gerechten.' },
+        { name: 'Mark van der Meer', rating: 4.8, review: 'Een geweldige ervaring!' },
+    ];
+
+    let currentStartIndex = 0;
+    const testimonialsToShow = 4;
+    function showTestimonials() {
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        testimonialCards.forEach((card, index) => {
+            card.style.display = (index >= currentStartIndex && index < currentStartIndex + testimonialsToShow) ? 'block' : 'none';
+        });
+    }
+
+    document.querySelector('.next-testimonial').addEventListener('click', () => {
+        currentStartIndex += testimonialsToShow;
+        if (currentStartIndex >= testimonials.length) {
+            currentStartIndex = 0; // Reset to first set if at the end
+        }
+        showTestimonials();
+    });
+
+    document.querySelector('.prev-testimonial').addEventListener('click', () => {
+        currentStartIndex -= testimonialsToShow;
+        if (currentStartIndex < 0) {
+            currentStartIndex = Math.max(0, testimonials.length - testimonialsToShow); // Go to last set if at the beginning
+        }
+        showTestimonials();
+    });
+
+    showTestimonials();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,687 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Menu - Parimi's Home Kitchen{% endblock %}
+
+{% block content %}
+<div class="menu-page">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 menu-sidebar">
+                <div class="sidebar-content">
+                    <h3 class="sidebar-title">Menu Categories</h3>
+                    
+                    <!-- All Items Checkbox -->
+                    <div class="category-group all-items">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="all-items" class="category-checkbox">
+                            <span class="checkmark"></span>
+                            All Items
+                        </label>
+                    </div>
+
+                    <!-- Breakfast Section -->
+                    <div class="category-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="breakfast-all" class="category-checkbox" data-category="breakfast">
+                            <span class="checkmark"></span>
+                            Breakfast
+                        </label>
+                        <div class="item-list" id="breakfast-items">
+                            {% for item in categories.0.menu_items.all %}
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="item-checkbox" data-category="breakfast" data-item-id="{{ item.id }}">
+                                <span class="checkmark"></span>
+                                {{ item.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Lunch Section -->
+                    <div class="category-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="lunch-all" class="category-checkbox" data-category="lunch">
+                            <span class="checkmark"></span>
+                            Lunch
+                        </label>
+                        <div class="item-list" id="lunch-items">
+                            {% for item in categories.1.menu_items.all %}
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="item-checkbox" data-category="lunch" data-item-id="{{ item.id }}">
+                                <span class="checkmark"></span>
+                                {{ item.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Dinner Section -->
+                    <div class="category-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="dinner-all" class="category-checkbox" data-category="dinner">
+                            <span class="checkmark"></span>
+                            Dinner
+                        </label>
+                        <div class="item-list" id="dinner-items">
+                            {% for item in categories.2.menu_items.all %}
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="item-checkbox" data-category="dinner" data-item-id="{{ item.id }}">
+                                <span class="checkmark"></span>
+                                {{ item.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="menu-content">
+                    <h1 class="text-center mb-5">Menu - Lalitha's Kitchen</h1>
+                    
+                    <div class="menu-grid">
+                        <div class="menu-item-card" data-item-id="1" data-category="available" onclick="openModal('Upma', 'Preparation process for Upma', 'Ingredients: Semolina, Vegetables, Spices', 'media/menu_items/Upma.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/Upma.jpg" alt="Upma" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Upma</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="1">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="2" data-category="available" onclick="openModal('Attu with Karampodi', 'Preparation process for Attu with Karampodi', 'Ingredients: Rice, Lentils, Spices', 'media/menu_items/attu.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/attu.jpg" alt="Attu with Karampodi" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Attu with Karampodi</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="2">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="3" data-category="available" onclick="openModal('Andhra Biryani', 'Preparation process for Andhra Biryani', 'Ingredients: Rice, Meat, Spices', 'media/menu_items/chicken-biryani.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/chicken-biryani.jpg" alt="Andhra Biryani" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Andhra Biryani</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="3">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="4" data-category="available" onclick="openModal('Dosa & Idli Batter', 'Preparation process for Dosa & Idli Batter', 'Ingredients: Rice, Lentils, Spices', 'media/menu_items/dosa-idli-batter.jpeg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/dosa-idli-batter.jpeg" alt="Dosa & Idli Batter" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Dosa & Idli Batter</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="4">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="5" data-category="available" onclick="openModal('Dosa', 'Preparation process for Dosa', 'Ingredients: Rice, Lentils, Spices', 'media/menu_items/dosa.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/dosa.jpg" alt="Dosa" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Dosa</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="5">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="6" data-category="available" onclick="openModal('Idli with Podi', 'Preparation process for Idli with Podi', 'Ingredients: Rice, Lentils, Spices', 'media/menu_items/idli-podi.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/idli-podi.jpg" alt="Idli with Podi" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Idli with Podi</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="6">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="7" data-category="available" onclick="openModal('Mysore Bonda', 'Preparation process for Mysore Bonda', 'Ingredients: Gram Flour, Vegetables, Spices', 'media/menu_items/mysore-bonda.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/mysore-bonda.jpg" alt="Mysore Bonda" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Mysore Bonda</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="7">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="8" data-category="available" onclick="openModal('Pesarattu', 'Preparation process for Pesarattu', 'Ingredients: Green Gram, Rice, Spices', 'media/menu_items/pesarattu.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/pesarattu.jpg" alt="Pesarattu" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Pesarattu</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="8">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="menu-item-card" data-item-id="9" data-category="available" onclick="openModal('Punugulu', 'Preparation process for Punugulu', 'Ingredients: Rice, Lentils, Spices', 'media/menu_items/punugulu.jpg')">
+                            <div class="menu-item-image">
+                                <img src="/media/menu_items/punugulu.jpg" alt="Punugulu" loading="lazy">
+                            </div>
+                            <div class="menu-item-details">
+                                <h3>Punugulu</h3>
+                                <button class="btn btn-primary add-to-cart-btn" data-item-id="9">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add to Cart Success Modal -->
+<div class="modal fade" id="addToCartModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle text-success mb-4" style="font-size: 3rem;"></i>
+                <h5 class="modal-title mb-3">Added to Cart!</h5>
+                <p class="text-muted">Your item has been added to the cart successfully.</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Continue Shopping
+                </button>
+                <a href="{% url 'cart' %}" class="btn btn-primary">
+                    View Cart
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Item Details -->
+<div class="modal fade" id="itemDetailModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Item Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalItemImage" src="" alt="" class="img-fluid">
+                <h5 id="modalItemName"></h5>
+                <p id="modalItemPreparation"></p>
+                <p id="modalItemIngredients"></p>
+                <label for="spiceLevel">Spice Level:</label>
+                <input type="range" id="spiceLevel" name="spiceLevel" min="1" max="5" value="3" style="width: 100%;">
+                <span id="spiceLevelValue">Medium</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+:root {
+    --primary-color: #FF6B6B;
+    --secondary-color: #4ECDC4;
+    --text-color: #2C3E50;
+    --background-color: #F7F9FC;
+    --card-background: #FFFFFF;
+    --accent-color: #FFE66D;
+    --sidebar-background: #FFFFFF;
+    --checkbox-size: 20px;
+}
+
+.menu-page {
+    background-color: var(--background-color);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+/* Sidebar Styles */
+.menu-sidebar {
+    background: var(--sidebar-background);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+}
+
+.sidebar-content {
+    padding-right: 1rem;
+}
+
+.sidebar-title {
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.category-group {
+    margin-bottom: 1.5rem;
+}
+
+.item-list {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Checkbox Styles */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    user-select: none;
+    transition: color 0.3s ease;
+}
+
+.checkbox-container:hover {
+    color: var(--primary-color);
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--checkbox-size);
+    width: var(--checkbox-size);
+    background-color: #eee;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: #ddd;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Menu Grid Styles */
+.menu-content {
+    padding: 0 1rem;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.menu-item-card {
+    background: var(--card-background);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: none;
+}
+
+.menu-item-card.visible {
+    display: block;
+}
+
+.menu-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.menu-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.menu-item-card:hover .menu-item-image img {
+    transform: scale(1.1);
+}
+
+.menu-item-details {
+    padding: 1.5rem;
+}
+
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.menu-item-header h3 {
+    font-size: 1.25rem;
+    color: var(--text-color);
+    margin: 0;
+    flex: 1;
+    padding-right: 1rem;
+}
+
+.prep-time {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.description {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.menu-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.add-to-cart-btn {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.add-to-cart-btn:hover {
+    background: #45B7AF;
+    transform: translateY(-2px);
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
+.add-to-cart-btn .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-to-cart-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.modal .btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .menu-sidebar {
+        height: auto;
+        position: relative;
+        top: 0;
+        margin-bottom: 2rem;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-item-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .prep-time {
+        align-self: flex-start;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const allItemsCheckbox = document.getElementById('all-items');
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox:not(#all-items)');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    const menuItems = document.querySelectorAll('.menu-item-card');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    const modal = new bootstrap.Modal(document.getElementById('addToCartModal'));
+
+    function toggleMenuItems(category, display) {
+        const items = document.querySelectorAll(`.menu-item-card[data-category="${category}"]`);
+        items.forEach(item => {
+            item.style.display = display ? 'block' : 'none';
+            if (display) {
+                setTimeout(() => item.classList.add('visible'), 50);
+            } else {
+                item.classList.remove('visible');
+            }
+        });
+    }
+
+    function updateCategoryCheckbox(category) {
+        const categoryCheckbox = document.querySelector(`.category-checkbox[data-category="${category}"]`);
+        const itemCheckboxes = document.querySelectorAll(`.item-checkbox[data-category="${category}"]`);
+        const checkedCount = Array.from(itemCheckboxes).filter(cb => cb.checked).length;
+        
+        if (categoryCheckbox) {
+            categoryCheckbox.checked = checkedCount === itemCheckboxes.length;
+            categoryCheckbox.indeterminate = checkedCount > 0 && checkedCount < itemCheckboxes.length;
+        }
+    }
+
+    function updateAllItemsCheckbox() {
+        const checkedCount = Array.from(itemCheckboxes).filter(cb => cb.checked).length;
+        allItemsCheckbox.checked = checkedCount === itemCheckboxes.length;
+        allItemsCheckbox.indeterminate = checkedCount > 0 && checkedCount < itemCheckboxes.length;
+    }
+
+    // Handle "All Items" checkbox
+    allItemsCheckbox.addEventListener('change', function() {
+        const isChecked = this.checked;
+        categoryCheckboxes.forEach(cb => cb.checked = isChecked);
+        itemCheckboxes.forEach(cb => cb.checked = isChecked);
+        menuItems.forEach(item => {
+            item.style.display = isChecked ? 'block' : 'none';
+            if (isChecked) {
+                setTimeout(() => item.classList.add('visible'), 50);
+            } else {
+                item.classList.remove('visible');
+            }
+        });
+    });
+
+    // Handle category checkboxes
+    categoryCheckboxes.forEach(categoryCheckbox => {
+        categoryCheckbox.addEventListener('change', function() {
+            const category = this.dataset.category;
+            const isChecked = this.checked;
+            
+            document.querySelectorAll(`.item-checkbox[data-category="${category}"]`)
+                .forEach(cb => cb.checked = isChecked);
+            
+            toggleMenuItems(category, isChecked);
+            updateAllItemsCheckbox();
+        });
+    });
+
+    // Handle individual item checkboxes
+    itemCheckboxes.forEach(itemCheckbox => {
+        itemCheckbox.addEventListener('change', function() {
+            const category = this.dataset.category;
+            const itemId = this.dataset.itemId;
+            const menuItem = document.querySelector(`.menu-item-card[data-item-id="${itemId}"]`);
+            
+            if (menuItem) {
+                menuItem.style.display = this.checked ? 'block' : 'none';
+                if (this.checked) {
+                    setTimeout(() => menuItem.classList.add('visible'), 50);
+                } else {
+                    menuItem.classList.remove('visible');
+                }
+            }
+            
+            updateCategoryCheckbox(category);
+            updateAllItemsCheckbox();
+        });
+    });
+
+    // Handle Add to Cart
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const itemId = this.dataset.itemId;
+            
+            // Add loading state
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            this.disabled = true;
+            
+            fetch('/cart/add/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    quantity: 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    modal.show();
+                    // Update cart count if available
+                    const cartCount = document.querySelector('.cart-count');
+                    if (cartCount && data.cart_count !== undefined) {
+                        cartCount.textContent = data.cart_count;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // Restore button state
+                this.innerHTML = originalContent;
+                this.disabled = false;
+            });
+        });
+    });
+
+    // Initially hide all items
+    menuItems.forEach(item => {
+        item.style.display = 'none';
+        item.classList.remove('visible');
+    });
+});
+
+function openModal(name, preparation, ingredients, image) {
+    console.log('Opening modal for:', name);
+    document.getElementById('modalItemName').innerText = name;
+    document.getElementById('modalItemPreparation').innerText = preparation;
+    document.getElementById('modalItemIngredients').innerText = ingredients;
+    document.getElementById('modalItemImage').src = image;
+    $('#itemDetailModal').modal('show');
+}
+
+function addToCart() {
+    const spiceLevel = document.getElementById('spiceLevel').value;
+    const spiceLevelText = spiceLevel == 1 ? 'Low' : spiceLevel == 2 ? 'Medium' : spiceLevel == 3 ? 'Medium' : spiceLevel == 4 ? 'Hot' : 'Super Hot';
+    const itemName = document.getElementById('modalItemName').innerText;
+    const itemImage = document.getElementById('modalItemImage').src;
+    const specialInstructions = `Spice Level: ${spiceLevelText}`;
+
+    // Logic to add item to cart
+    console.log('Adding to cart:', itemName, itemImage, specialInstructions);
+    fetch('/cart/add/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            item_name: itemName,
+            item_image: itemImage,
+            special_instructions: specialInstructions,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const modal = new bootstrap.Modal(document.getElementById('addToCartModal'));
+            modal.show();
+            // Update cart count if available
+            const cartCount = document.querySelector('.cart-count');
+            if (cartCount && data.cart_count !== undefined) {
+                cartCount.textContent = data.cart_count;
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+</script>
+
+{% endblock %}

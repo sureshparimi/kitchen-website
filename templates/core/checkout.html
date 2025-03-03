@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Checkout - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Checkout</h2>
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Order Summary</h5>
+                    <div class="cart-items">
+                        {% for item_id, quantity in request.session.cart.items %}
+                        <div class="cart-item">
+                            <p>{{ item_id }} x {{ quantity }}</p>
+                            <p class="text-end">€{{ quantity * MenuItem.objects.get(id=item_id).price }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <p class="text-end"><strong>Total: €{{ total }}</strong></p>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Pickup Information</h5>
+                    <p class="card-text">
+                        <i class="fas fa-clock"></i> Available pickup times:<br>
+                        Monday - Friday: 5:00 PM - 9:00 PM<br>
+                        Saturday - Sunday: 12:00 PM - 9:00 PM
+                    </p>
+                    <p class="card-text">
+                        <i class="fas fa-info-circle"></i> Please select a pickup time at least 30 minutes from now.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

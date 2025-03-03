@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Your Order History</h2>
+    
+    {% if orders %}
+        <div class="row">
+            {% for order in orders %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Order #{{ order.id }}</h5>
+                            <p class="card-text">
+                                <strong>Date:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}<br>
+                                <strong>Total:</strong> €{{ order.total_amount }}<br>
+                                <strong>Status:</strong> 
+                                <span class="badge {% if order.status == 'completed' %}bg-success{% elif order.status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                    {{ order.status|title }}
+                                </span>
+                            </p>
+                            <div class="text-end">
+                                <a href="{% url 'order_detail' order.id %}" class="btn btn-primary">
+                                    <i class="fas fa-info-circle me-2"></i>View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center">
+            <p class="lead">You haven't placed any orders yet.</p>
+            <a href="{% url 'menu' %}" class="btn btn-primary">
+                <i class="fas fa-utensils me-2"></i>Browse Menu
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Profile Information</h3>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <h3>Recent Orders</h3>
+            {% if orders %}
+                <div class="list-group">
+                    {% for order in orders %}
+                    <a href="{% url 'order_detail' order.id %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Order #{{ order.id }}</h5>
+                            <small>{{ order.created_at|date:"F j, Y, g:i a" }}</small>
+                        </div>
+                        <p class="mb-1">Total: €{{ order.total_amount }}</p>
+                        <span class="badge status-badge status-{{ order.status }}">{{ order.status|title }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="lead">You haven't placed any orders yet.</p>
+                <a href="{% url 'menu' %}" class="btn btn-primary">Browse Menu</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .order-details {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+        .customer-info {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Order Received!</h1>
+            <p>Order #{{ order.id }} - {{ order.created_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+
+        <div class="customer-info">
+            <h2>Customer Information</h2>
+            <p><strong>Name:</strong> {{ order.user.get_full_name|default:order.user.username }}</p>
+            <p><strong>Phone:</strong> {{ order.user.phone_number }}</p>
+            <p><strong>Email:</strong> {{ order.user.email }}</p>
+        </div>
+
+        <div class="order-details">
+            <h2>Order Details</h2>
+            <p><strong>Requested Pickup Time:</strong> {{ order.pickup_time|date:"F j, Y, g:i a" }}</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td>{{ item.menu_item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>€{{ item.price }}</td>
+                        <td>€{{ item.quantity|multiply:item.price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="total">
+                        <td colspan="3" style="text-align: right;">Total:</td>
+                        <td>€{{ order.total_amount }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            {% if order.notes %}
+            <div class="notes">
+                <h3>Special Notes:</h3>
+                <p>{{ order.notes }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="action-required">
+            <p style="color: #dc3545; font-weight: bold;">Action Required:</p>
+            <p>Please call the customer at {{ order.user.phone_number }} to confirm this order.</p>
+        </div>
+    </div>
+</body>
+</html>
